@@ -1,0 +1,46 @@
+<p>
+  profile works!
+</p>
+{{location.path()}}
+<button (click)="myEvent($event)">My Button</button>
+<table>
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td>{{personalInfo.name}}</td>
+    </tr>
+    <tr>
+      <td>Age</td>
+      <td>{{personalInfo.age}}</td>
+    </tr>
+    <tr>
+      <td>Email</td>
+      <td>{{personalInfo.email}}</td>
+    </tr>
+  </tbody>
+</table>
+<form (ngSubmit)="familyMemberSubmit(familyMember.value)" #familyMember="ngForm">
+  <input type="text" name="name" [(ngModel)]='familyMember.name'>  <br>
+  <input type="date" name="dob" [(ngModel)]='familyMember.dob'>  <br>
+  <input type="text" name="bloodGroup" [(ngModel)]='familyMember.bloodGroup'>  <br>
+  <select name="sex" name="sex" [(ngModel)]='familyMember.sex'>  <br>
+    <option value="">Select</option>
+    <option value="male">Male</option>
+    <option value="female">Female</option>
+  </select>
+  <button type="submit" class="btn btn-success" [disabled]="!familyMember.form.valid">Submit</button>
+  <pre>
+    {{familyMember.value | json}}
+    {{familyMember.valid | json}}
+  </pre>
+</form>
+<table>
+  <tbody>
+    <tr *ngFor="let fm of familyMembers">
+      <td>{{fm.name}}</td>
+      <td>{{fm.dob}}</td>
+      <td>{{fm.bloodGroup}}</td>
+      <td>{{fm.sex}}</td>
+    </tr>
+  </tbody>
+</table>
