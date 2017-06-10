@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
+import { Http, Response, Headers, RequestOptions, URLSearchParams  } from '@angular/http';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +12,7 @@ import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common'
 })
 export class ProfileComponent implements OnInit {
   location: Location;
+  http: Http;
 
   familyMember = {};
   familyMembers = [];
@@ -19,13 +23,20 @@ export class ProfileComponent implements OnInit {
     email: 'fahadbillah@yahoo.com',
   };
 
-  constructor(location: Location) { this.location = location; }
+  constructor(location: Location, http: Http) {
+    this.location = location; 
+    this.http = http; 
+  }
 
   ngOnInit() {
   }
 
   myEvent(event) {
     console.log(event);
+    this.http.get('http://max-portal.app/api/employee/593bca6b7b7e0f4ec6b21e6b')
+    .map((res: Response) => {
+      console.log(res.json());
+    });
   }
 
   familyMemberSubmit(familyMemberForm) {
@@ -33,4 +44,11 @@ export class ProfileComponent implements OnInit {
     console.log(familyMemberForm)
     this.familyMembers.push(familyMemberForm);
   }
+
+  /*getUsers(){
+    return this.http.get('http://max-portal.app/api/employee/593bca6b7b7e0f4ec6b21e6b')
+    .map((res: Response) => {
+      console.log(res.json());
+    });
+  }*/
 }
