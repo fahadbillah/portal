@@ -36,13 +36,13 @@ employeeSchema.plugin(timestamps);
 employeeSchema.pre('save', function(next) {
     var employee = this;
     if (!employee.isModified('password')) {
-      return next()
-    };
+      return next();
+    }
     bcrypt.hash(employee.password, saltRounds, function(error, hash) {
       // Store hash in your password DB. 
       if(error) {
         return next(error);
-      };
+      }
       employee.password=hash;
       next();
     });

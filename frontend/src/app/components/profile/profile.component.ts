@@ -33,10 +33,13 @@ export class ProfileComponent implements OnInit {
 
   myEvent(event) {
     console.log(event);
-    this.http.get('http://max-portal.app/api/employee/593bca6b7b7e0f4ec6b21e6b')
-    .map((res: Response) => {
-      console.log(res.json());
-    });
+    this.http.get('http://max-portal.app/api/employee/593c375f402aef0569b0b227')
+    .subscribe((res: Response) => {
+      console.log(res)
+    })
+    // .map((res: Response) => {
+    //   console.log(res.json());
+    // });
   }
 
   familyMemberSubmit(familyMemberForm) {

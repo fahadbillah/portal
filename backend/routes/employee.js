@@ -2,27 +2,18 @@ var express = require('express');
 var router = express.Router();
 var employeeSchema = require('../models/employeeSchema');
 
-/* GET employees listing. */
+/* GET employee listing. */
 router.get('/', function(req, res, next) {
   res.send('List of employee');
 });
 
-/* GET single employee. */
-router.get('/:user_id', function (req, res) {
-  // res.send(req.params.user_id)
-
-  employeeSchema.findOne({ '_id' : req.params.user_id },function(err, employee) {
-    if(err){
-      console.log("no employee found with this id");
-      res.json(err);
-    }else{
-      res.json(employee);
-    }
-  })
-})
-
-/* GET employees listing. */
-router.get('/setup', function(req, res, next) {
+/* GET employee listing. */
+router.post('/setup/:token', function(req, res, next) {
+  var token = req.params.token;
+  if (token !== 'MdoyAhZUXKdIAnExBYE') {
+    res.send('not authorized');
+  }
+  console.log('setup');
   var setupEmployee = {
     first_name : 'Fahad',
     last_name : 'Billah',
@@ -58,6 +49,20 @@ router.get('/setup', function(req, res, next) {
     }
   });
 
+});
+
+/* GET single employee. */
+router.get('/:user_id', function (req, res) {
+  // res.send(req.params.user_id)
+  console.log('user_id');
+  employeeSchema.findOne({ '_id' : req.params.user_id },function(err, employee) {
+    if(err){
+      console.log("no employee found with this id");
+      res.json(err);
+    }else{
+      res.json(employee);
+    }
+  });
 });
 
 module.exports = router;
