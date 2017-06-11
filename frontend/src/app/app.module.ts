@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { Routes, RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';  // <-- #1 import module
 
 import { LayoutComponent } from './components/layout/layout.component';
 import { AppComponent } from './components/app/app.component';
@@ -36,7 +37,8 @@ const appRoutes: Routes = [
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    ReactiveFormsModule // <-- #2 add to Angular module imports
   ],
   providers: [],
   bootstrap: [AppComponent]

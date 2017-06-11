@@ -33,7 +33,7 @@ export class ProfileComponent implements OnInit {
 
   myEvent(event) {
     console.log(event);
-    this.http.get('http://max-portal.app/api/employee/593c375f402aef0569b0b227')
+    this.http.get('http://max-portal.app/api/employee/profile/593c375f402aef0569b0b227')
     .subscribe((res: Response) => {
       console.log(res)
     })

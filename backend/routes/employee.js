@@ -52,10 +52,8 @@ router.post('/setup/:token', function(req, res, next) {
 });
 
 /* GET single employee. */
-router.get('/:user_id', function (req, res) {
-  // res.send(req.params.user_id)
-  console.log('user_id');
-  employeeSchema.findOne({ '_id' : req.params.user_id },function(err, employee) {
+router.get('/profile/:_id', function (req, res) {
+  employeeSchema.findOne({ '_id' : req.params._id },function(err, employee) {
     if(err){
       console.log("no employee found with this id");
       res.json(err);
