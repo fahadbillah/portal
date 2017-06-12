@@ -1,14 +1,27 @@
-<form [formGroup]="loginForm" novalidate>
-  <div class="form-group">
-    <label class="center-block">Email or Phone or MAX employee id:
-      <input type="email" class="form-control" formControlName="userName">
-    </label>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <form novalidate (ngSubmit)="loginSubmit(login)" [formGroup]="login">
+      <div class="form-group">
+        <label class="center-block">Email or Phone or MAX employee id:</label>
+        <input type="text" class="form-control" placeholder="Email or Phone or MAX employee id" formControlName="userName">
+      </div>
+      <div class="form-group">
+        <label class="center-block">password</label>
+          <input type="password" class="form-control" placeholder="password" formControlName="password">
+      </div>
+      <div class="form-group">
+        <button type="submit" [disabled]="login.invalid" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
   </div>
-  <div class="form-group">
-    <label class="center-block">password
-      <input type="password" class="form-control" formControlName="password">
-    </label>
-  </div>
-</form>
-<pre>Form value: {{ loginForm.value | json }}</pre>
-<pre>Form status: {{ loginForm.status | json }}</pre>
+</div>
+<div class="col-md-12">
+  <pre>Form value: {{ login.value | json }}</pre>
+  <pre>Form status: {{ login.status | json }}</pre>
+  <pre>
+    Username status: {{ login.controls.userName?.errors | json }}
+    password status: {{ login.get('password').errors | json }}
+    <!-- {{login.invalid|json}} -->
+  </pre>
+
+</div>
