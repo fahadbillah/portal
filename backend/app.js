@@ -1,3 +1,5 @@
+var fs = require('fs');
+var cert = fs.readFileSync('private.key');  // get private key
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -5,6 +7,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors')
+var expressJWT = require('express-jwt')
  
 /*=================================================
 =            mongo database connection start            =
@@ -28,6 +31,7 @@ var employee = require('./routes/employee');
 
 var app = express();
 app.use(cors())
+app.use(expressJWT({ secret: cert}).unless({path: ['/auth/login']}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

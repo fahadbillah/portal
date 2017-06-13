@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
     .subscribe((res) => {
       console.log(res)
     })
-    this.buildLoginForm();
+    // this.buildLoginForm();
   }
 
   buildLoginForm(): void {
