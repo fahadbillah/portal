@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var employeeSchema = require('../models/employeeSchema');
+var employee = require('../models/employee');
 
 /* GET employee listing. */
 router.get('/', function(req, res, next) {
@@ -26,14 +26,14 @@ router.post('/setup/:token', function(req, res, next) {
     profile_picture: 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/17630116_10211178721376789_6914022446268479040_n.jpg?oh=55249b0c95137d8d9aef45e3aa97d785&oe=59E4248A'
   };
 
-  employeeSchema.findOne({ 'contact_info.email' : 'fahadbillah@yahoo.com' },function(err, employee) {
+  employee.findOne({ 'contact_info.email' : 'fahadbillah@yahoo.com' },function(err, employee) {
     if(err){
-      console.log("error found in /employee/employee_change_password at employeeSchema.findOne()");
+      console.log("error found in /employee/employee_change_password at employee.findOne()");
       console.error(err);
       res.status(500).json(err);
     }else{
       if (employee === null) {
-        var firstEmployee = new employeeSchema(setupEmployee);
+        var firstEmployee = new employee(setupEmployee);
         firstEmployee.save(function(error){
           if(error){
             console.log(error);
@@ -53,7 +53,7 @@ router.post('/setup/:token', function(req, res, next) {
 
 /* GET single employee. */
 router.get('/profile/:_id', function (req, res) {
-  employeeSchema.findOne({ '_id' : req.params._id },function(err, employee) {
+  employee.findOne({ '_id' : req.params._id },function(err, employee) {
     if(err){
       console.log("no employee found with this id");
       res.json(err);

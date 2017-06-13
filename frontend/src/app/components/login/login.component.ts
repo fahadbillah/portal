@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Http, Response, Headers, RequestOptions, URLSearchParams  } from '@angular/http';
 
 import { Login } from './login.interface'
 
@@ -10,8 +11,11 @@ import { Login } from './login.interface'
 })
 export class LoginComponent implements OnInit {
   login: FormGroup;
+  http: Http;
 
-  constructor(private fb: FormBuilder) { // <--- inject FormBuilder
+
+  constructor(private fb: FormBuilder, http: Http) { // <--- inject FormBuilder
+    this.http = http; 
   }
 
   ngOnInit() {
@@ -21,6 +25,15 @@ export class LoginComponent implements OnInit {
   loginSubmit({ value, valid }: { value: Login, valid: boolean }) {
     console.log(value, valid);
     console.log(this.login.value, this.login.valid);
+
+    // this.http.get('http://max-portal.app/api/auth/login')
+    // .subscribe((res: Response) => {
+    //   console.log(res)
+    // })
+    this.http.post('http://max-portal.app/api/auth/login', value)
+    .subscribe((res) => {
+      console.log(res)
+    })
     this.buildLoginForm();
   }
 

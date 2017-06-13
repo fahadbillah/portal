@@ -5,7 +5,7 @@ var SALT_WORK_FACTOR = 10;
 var saltRounds = 10;
 
 
-var employeeSchema = new mongoose.Schema({
+var employee = new mongoose.Schema({
   first_name : {type:String, required:true},
   middle_name : {type:String},
   last_name : {type:String, required:true},
@@ -30,10 +30,10 @@ var employeeSchema = new mongoose.Schema({
 }); 
 
 
-employeeSchema.plugin(timestamps);
+employee.plugin(timestamps);
 
 
-employeeSchema.pre('save', function(next) {
+employee.pre('save', function(next) {
     var employee = this;
     if (!employee.isModified('password')) {
       return next();
@@ -48,7 +48,7 @@ employeeSchema.pre('save', function(next) {
     });
 });
 
-employeeSchema.methods.comparePassword = function(candidatePassword, callback) {
+employee.methods.comparePassword = function(candidatePassword, callback) {
     var myPassword=this.password;
     bcrypt.compare(candidatePassword, myPassword)
     .then(function(d){
@@ -56,4 +56,4 @@ employeeSchema.methods.comparePassword = function(candidatePassword, callback) {
     });
 };
 
-module.exports=mongoose.model("employee",employeeSchema);
+module.exports=mongoose.model("employee",employee);

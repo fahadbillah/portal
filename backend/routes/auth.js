@@ -1,15 +1,13 @@
 var express = require('express');
 var router = express.Router();
-var employeeSchema = require('../models/employeeSchema');
+var employeeSchema = require('../models/employee');
 var Crypt = require('../middlewares/crypt');
 
 /* POST login data. */
-router.post('/login', Crypt.passwordEncrypt, function(req, res, next) {
+router.post('/login', function(req, res, next) {
   console.log(req.body);
 
-  Crypt.decrypt();
-
-
+  employeeSchema.
 
   res.json(req.body);
 });
