@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-// import { Http, Response, Headers, RequestOptions, URLSearchParams  } from '@angular/http';
 
-import { HttpClient } from '../../services/http-client'
+import { HttpService } from '../../services/http.service'
 import { Login } from './login.interface'
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  providers: [HttpService]
 })
 export class LoginComponent implements OnInit {
   login: FormGroup;
-  http: HttpClient;
+  http: HttpService;
 
 
-  constructor(private fb: FormBuilder, http: HttpClient) { // <--- inject FormBuilder
+  constructor(private fb: FormBuilder, http: HttpService) { // <--- inject FormBuilder
     this.http = http; 
   }
 
@@ -27,10 +27,6 @@ export class LoginComponent implements OnInit {
     console.log(value, valid);
     console.log(this.login.value, this.login.valid);
 
-    // this.http.get('http://max-portal.app/api/auth/login')
-    // .subscribe((res: Response) => {
-    //   console.log(res)
-    // })
     this.http.post('http://max-portal.app/api/auth/login', value)
     .subscribe((res) => {
       console.log(res)

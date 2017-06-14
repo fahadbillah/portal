@@ -39,7 +39,6 @@ employee.pre('save', function(next) {
       return next();
     }
     bcrypt.hash(employee.password, saltRounds, function(error, hash) {
-      // Store hash in your password DB. 
       if(error) {
         return next(error);
       }
@@ -52,7 +51,7 @@ employee.methods.comparePassword = function(candidatePassword, callback) {
     var myPassword=this.password;
     bcrypt.compare(candidatePassword, myPassword)
     .then(function(d){
-      callback(null,d);
+      callback(d);
     });
 };
 

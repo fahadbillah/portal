@@ -26,13 +26,13 @@ router.post('/setup/:token', function(req, res, next) {
     profile_picture: 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/17630116_10211178721376789_6914022446268479040_n.jpg?oh=55249b0c95137d8d9aef45e3aa97d785&oe=59E4248A'
   };
 
-  employee.findOne({ 'contact_info.email' : 'fahadbillah@yahoo.com' },function(err, employee) {
+  employee.findOne({ 'contact_info.email' : 'fahadbillah@yahoo.com' },function(err, emp) {
     if(err){
       console.log("error found in /employee/employee_change_password at employee.findOne()");
       console.error(err);
       res.status(500).json(err);
     }else{
-      if (employee === null) {
+      if (emp === null) {
         var firstEmployee = new employee(setupEmployee);
         firstEmployee.save(function(error){
           if(error){
@@ -44,7 +44,7 @@ router.post('/setup/:token', function(req, res, next) {
           }
         });
       }else{
-        res.json(employee);
+        res.json(emp);
       }
     }
   });
