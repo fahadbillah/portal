@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Http, Response, Headers, RequestOptions, URLSearchParams  } from '@angular/http';
+// import { Http, Response, Headers, RequestOptions, URLSearchParams  } from '@angular/http';
 
+import { HttpClient } from '../../services/http-client'
 import { Login } from './login.interface'
 
 @Component({
@@ -11,10 +12,10 @@ import { Login } from './login.interface'
 })
 export class LoginComponent implements OnInit {
   login: FormGroup;
-  http: Http;
+  http: HttpClient;
 
 
-  constructor(private fb: FormBuilder, http: Http) { // <--- inject FormBuilder
+  constructor(private fb: FormBuilder, http: HttpClient) { // <--- inject FormBuilder
     this.http = http; 
   }
 
