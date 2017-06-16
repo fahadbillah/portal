@@ -4,10 +4,12 @@
       <div class="form-group">
         <label class="center-block">Email or Phone or MAX employee id:</label>
         <input type="text" class="form-control" placeholder="Email or Phone or MAX employee id" formControlName="userName">
+        <span class="label label-danger" *ngIf="login.get('userName').invalid && login.get('userName').dirty">Required</span>
       </div>
       <div class="form-group">
         <label class="center-block">password</label>
-          <input type="password" class="form-control" placeholder="password" formControlName="password">
+        <input type="password" class="form-control" placeholder="password" formControlName="password">
+        <span class="label label-danger" *ngIf="login.get('password').invalid && login.get('password').dirty">Required</span>
       </div>
       <div class="form-group">
         <button type="submit" [disabled]="login.invalid" class="btn btn-primary">Submit</button>
@@ -20,7 +22,7 @@
   <pre>Form status: {{ login.status | json }}</pre>
   <pre>
     Username status: {{ login.controls.userName?.errors | json }}
-    password status: {{ login.get('password').errors | json }}
+    password status: {{ login.get('password').dirty | json }}
     <!-- {{login.invalid|json}} -->
   </pre>
 

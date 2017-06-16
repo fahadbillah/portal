@@ -51,7 +51,9 @@ employee.methods.comparePassword = function(candidatePassword, callback) {
     var myPassword=this.password;
     bcrypt.compare(candidatePassword, myPassword)
     .then(function(d){
-      callback(d);
+      callback(null, d);
+    }, function(e, d) {
+      callback(e, d);
     });
 };
 

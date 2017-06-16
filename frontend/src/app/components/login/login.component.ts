@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 
 import { HttpService } from '../../services/http.service'
 import { Login } from './login.interface'
+import { CustomResponse } from '../../common/response.interface'
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,6 @@ import { Login } from './login.interface'
 export class LoginComponent implements OnInit {
   login: FormGroup;
   http: HttpService;
-
 
   constructor(private fb: FormBuilder, http: HttpService) { // <--- inject FormBuilder
     this.http = http; 
@@ -28,10 +28,22 @@ export class LoginComponent implements OnInit {
     console.log(this.login.value, this.login.valid);
 
     this.http.post('http://max-portal.app/api/auth/login', value)
-    .subscribe((res) => {
-      console.log(res)
-    })
+    .map((res:any) => res.json())
+    .subscribe(
+        data => this.saveJwt(data.token),
+        err => this.logError(err)
+    );
     // this.buildLoginForm();
+  }
+
+
+  saveJwt(jwt: string) {
+    console.log(jwt);
+    if(jwt) localStorage.setItem('JWT', jwt)
+  }
+
+  logError(err: any) {
+    console.log(err);
   }
 
   buildLoginForm(): void {

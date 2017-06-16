@@ -15,6 +15,7 @@ var expressJWT = require('express-jwt')
 
 var mongoose = require('mongoose');
 var url="mongodb://127.0.0.1:27017/MAXPORTAL";
+mongoose.Promise = global.Promise;
 mongoose.connect(url, function(error){
   if(error){
     console.log("error found in connecting to mongodb://localhost:27017/MAXPORTAL");

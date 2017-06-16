@@ -15,9 +15,23 @@ router.post('/login', function(req, res, next) {
         data: error
       });
     } else {
-
+      console.log(employeeData);
+      if (employeeData === null) {
+        res.status(404).json({
+          success: false,
+          data: {
+            message: 'username or password does not matched!'
+          }
+        });
+      }
       var loginCandidate = new employee(employeeData);
-      loginCandidate.comparePassword(req.body.password, function(match) {
+      loginCandidate.comparePassword(req.body.password, function(err, match) {
+        if (err) {
+          res.json({
+            success: false,
+            data: err
+          });
+        }
         if (match) {
           employeeData = JSON.parse(JSON.stringify(employeeData));
 
@@ -31,7 +45,7 @@ router.post('/login', function(req, res, next) {
           res.json({
             success: true,
             token: token,
-            data: employeeData
+            datas: employeeData
           });
         } else {
           res.json({

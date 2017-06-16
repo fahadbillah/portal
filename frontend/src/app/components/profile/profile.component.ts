@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
-import { Http, Response, Headers, RequestOptions, URLSearchParams  } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import { HttpService } from '../../services/http.service'
+
 
 @Component({
   selector: 'app-root',
-  providers: [Location, {provide: LocationStrategy, useClass: PathLocationStrategy}],
+  providers: [Location, {provide: LocationStrategy, useClass: PathLocationStrategy}, HttpService],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
   location: Location;
-  http: Http;
+  http: HttpService;
 
   familyMember = {};
   familyMembers = [];
@@ -23,7 +24,7 @@ export class ProfileComponent implements OnInit {
     email: 'fahadbillah@yahoo.com',
   };
 
-  constructor(location: Location, http: Http) {
+  constructor(location: Location, http: HttpService) {
     this.location = location; 
     this.http = http; 
   }
@@ -34,7 +35,7 @@ export class ProfileComponent implements OnInit {
   myEvent(event) {
     console.log(event);
     this.http.get('http://max-portal.app/api/employee/profile/593c375f402aef0569b0b227')
-    .subscribe((res: Response) => {
+    .subscribe((res) => {
       console.log(res)
     })
     // .map((res: Response) => {
