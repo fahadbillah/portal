@@ -2,12 +2,16 @@ var fs = require('fs');
 var express = require('express');
 var router = express.Router();
 var employee = require('../models/employee');
+var refreshToken = require('../models/refreshToken');
 var Crypt = require('../middlewares/crypt');
 var jwt = require('jsonwebtoken');
 
 /* POST login data. */
 router.post('/login', function(req, res, next) {
-  employee.findOne({ 'contact_info.email': req.body.userName })
+  employee.findOne(
+    { $or: [ { 'contact_info.email': req.body.userName }, { 'contact_info.phone': req.body.userName }, { 'employee_id': req.body.userName } ] }
+    // { 'contact_info.email': req.body.userName }
+    )
   .exec(function(error, employeeData) {
     if (error) {
       res.json({
