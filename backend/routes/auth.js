@@ -1,4 +1,5 @@
 var fs = require('fs');
+const uuidv4 = require('uuid/v4');
 var express = require('express');
 var router = express.Router();
 var employee = require('../models/employee');
@@ -19,7 +20,7 @@ router.post('/login', function(req, res, next) {
         data: error
       });
     } else {
-      console.log(employeeData);
+      // console.log(employeeData);
       if (employeeData === null) {
         res.status(404).json({
           success: false,
@@ -41,10 +42,33 @@ router.post('/login', function(req, res, next) {
 
           delete employeeData.password
 
+          var refreshTokenData = {
+            refresh_token : uuidv4(),
+            user_info : employeeData
+          };
+
+          console.log(refreshTokenData);
+
+          var createRefreshToken = new refreshToken(refreshTokenData);
+          createRefreshToken.save(function(error){
+            if(error){
+              console.log(error);
+              res.json({
+                success: false,
+                data: {
+                  message: 'refreshToken creation failed!'
+                }
+              });
+            }else{
+              console.log("a new refreshToken saved");
+            }
+          });
+
           var cert = fs.readFileSync('private.key');  // get private key
           var token = jwt.sign({
             exp: Math.floor(Date.now() / 1000) + 2*60,
-            data: employeeData
+            data: employeeData,
+            refreshToken: refreshTokenData.refresh_token
           }, cert);
           res.json({
             success: true,

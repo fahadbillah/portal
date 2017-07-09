@@ -4,7 +4,7 @@ var mongoose=require("mongoose");
 var refreshToken = new mongoose.Schema({
   refresh_token : {type:String, required:true},
   user_info : { type: Object },
-  expiredAt : { type: Date, expires: 10 }
+  expiredAt : { type: Date, expires: 3600, default: Date.now }
 }); 
 
-// refreshToken.plugin(timestamps);
+module.exports=mongoose.model("refreshToken",refreshToken);

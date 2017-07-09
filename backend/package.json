@@ -20,7 +20,8 @@
     "mongoose": "^4.10.5",
     "mongoose-timestamp": "^0.6.0",
     "morgan": "~1.8.1",
-    "serve-favicon": "~2.4.2"
+    "serve-favicon": "~2.4.2",
+    "uuid": "^3.1.0"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
