@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var employee = require('../models/employee');
+var JWTValidation = require('../middlewares/JWTValidation');
 
 /* GET employee listing. */
 router.get('/', function(req, res, next) {
@@ -52,7 +53,7 @@ router.post('/setup/:token', function(req, res, next) {
 });
 
 /* GET single employee. */
-router.get('/profile/:_id', function (req, res) {
+router.get('/profile/:_id', JWTValidation, function (req, res) {
   employee.findOne({ '_id' : req.params._id },function(err, employee) {
     if(err){
       console.log("no employee found with this id");

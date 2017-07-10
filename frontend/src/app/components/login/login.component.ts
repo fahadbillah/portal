@@ -36,6 +36,14 @@ export class LoginComponent implements OnInit {
     // this.buildLoginForm();
   }
 
+  myEvent(event) {
+    console.log(event);
+    this.http.get('http://max-portal.app/api/employee/profile/593bca6b7b7e0f4ec6b21e6b')
+    .subscribe((res) => {
+      console.log(res)
+    })
+  }
+
 
   saveJwt(jwt: string) {
     console.log(jwt);
