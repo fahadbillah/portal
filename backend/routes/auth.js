@@ -66,9 +66,9 @@ router.post('/login', function(req, res, next) {
 
           var cert = fs.readFileSync('private.key');  // get private key
           var token = jwt.sign({
-            exp: Math.floor(Date.now() / 1000) + 2*60,
+            exp: Math.floor(Date.now() / 1000) + 5,
             data: employeeData,
-            refreshToken: refreshTokenData.refresh_token
+            refresh_token: refreshTokenData.refresh_token
           }, cert);
           res.json({
             success: true,

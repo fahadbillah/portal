@@ -9,8 +9,7 @@ export class HttpService {
   createAuthorizationHeader(headers: Headers) {
     const JWT = localStorage.getItem('JWT');
 
-    headers.append('Authorization', 'Bearer ' +
-      JWT); 
+    headers.append('Authorization', 'Bearer ' + JWT); 
   }
 
   get(url) {
