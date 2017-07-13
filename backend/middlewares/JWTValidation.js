@@ -14,6 +14,7 @@ var validate = function(token) {
 
     // invalid token - synchronous
     try {
+      console.log(token);
       var decoded = jwt.verify(token, secretKey);
       console.log(decoded);
     } catch(err) {
@@ -75,8 +76,7 @@ var JWTValidation = function (req, res, next) {
   if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
     token = req.headers.authorization.split(' ')[1];
 
-
-    if (!!token) {
+    if (token !== 'null') {
       validate(token)
       .then(function(data) {
         console.log('from validate success ', data);
@@ -84,15 +84,29 @@ var JWTValidation = function (req, res, next) {
         if (data) {
           console.log(data);
           try{
-            console.log('testset');
+            console.log('dddd');
 
             var decoded = jwt.decode(token);
 
-            res.JWTtoken = jwt.sign({
+
+            console.log("decoded", decoded.refresh_token);
+            var refreshedJWTToken = jwt.sign({
               exp: Math.floor(Date.now() / 1000) + 60,
               refresh_token: decoded.refresh_token
-            }, cert);
-            console.log(res);
+            }, secretKey);
+            // res.setHeader('refreshedJWTToken', jwt.sign({
+            //   exp: Math.floor(Date.now() / 1000) + 60,
+            //   refresh_token: decoded.refresh_token
+            // }, secretKey))
+
+            var headerStr =JSON.stringify(req.headers);
+          
+          console.log(headerStr); 
+           // set response header
+             // res.setHeader('content-type', 'application/json');
+             
+             res.write(JSON.stringify({'refreshedJWTToken': refreshedJWTToken}));
+            // console.log(res);
             next();
             // res.json({
             //   success: true,
@@ -131,7 +145,7 @@ var JWTValidation = function (req, res, next) {
       message: 'Authorization headers not available.'
     });
   }
-  next();
+  // next();
 };
 
 

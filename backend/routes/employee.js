@@ -54,6 +54,7 @@ router.post('/setup/:token', function(req, res, next) {
 
 /* GET single employee. */
 router.get('/profile/:_id', JWTValidation, function (req, res) {
+  console.log("tstedddd");
   employee.findOne({ '_id' : req.params._id },function(err, employee) {
     if(err){
       console.log("no employee found with this id");
