@@ -14,13 +14,15 @@ var validate = function(token) {
 
     // invalid token - synchronous
     try {
-      console.log(token);
+      // console.log(token);
       var decoded = jwt.verify(token, secretKey);
+      resolve({'validated': true});
+      // return true;
       console.log(decoded);
     } catch(err) {
       console.log(err);
       var decoded = jwt.decode(token);
-      console.log(decoded.refresh_token);
+      // console.log(decoded.refresh_token);
       
       if (err.name === 'TokenExpiredError') {
         var checkIfRefreshTokenAvailable = function(rToken){
@@ -29,16 +31,15 @@ var validate = function(token) {
               checkRefreshToken(rToken)
               .then(function(data) {
                 console.log(1);
-                console.log(data);
+                // console.log(data);
                 if (data) {
-                  resolve(true);
+                  resolve({'validated': false, 'refreshable': true});
                 } else {
-                  resolve(false);
+                  resolve({'validated': false, 'refreshable': false});
                 }
-              }, function(err, data) {
+              }, function(err) {
                 console.log(2);
-                console.log(data);
-                reject(err); // reject
+                reject({'validated': false, 'refreshable': false, 'error': err});
               });
             }
           );
@@ -50,8 +51,8 @@ var validate = function(token) {
           console.log(data);
           console.log('refresh token promise works', data);
           // return true;
-          resolve(data);
-        }, function(err, data) {
+          reject(data);
+        }, function(err) {
           console.log(err);
           console.log(4);
           console.log(data);
@@ -61,7 +62,7 @@ var validate = function(token) {
         });
 
       } else {
-
+        // resolve(false);
       }
     }
   });
@@ -80,39 +81,21 @@ var JWTValidation = function (req, res, next) {
       validate(token)
       .then(function(data) {
         console.log('from validate success ', data);
-
-        if (data) {
-          console.log(data);
+        next();
+      }, function(err) {
+        console.log('from validate error ', err);
+        if (!err.validated && err.refreshable) {
           try{
             console.log('dddd');
-
             var decoded = jwt.decode(token);
-
 
             console.log("decoded", decoded.refresh_token);
             var refreshedJWTToken = jwt.sign({
               exp: Math.floor(Date.now() / 1000) + 60,
               refresh_token: decoded.refresh_token
             }, secretKey);
-            // res.setHeader('refreshedJWTToken', jwt.sign({
-            //   exp: Math.floor(Date.now() / 1000) + 60,
-            //   refresh_token: decoded.refresh_token
-            // }, secretKey))
-
-            var headerStr =JSON.stringify(req.headers);
-          
-          console.log(headerStr); 
-           // set response header
-             // res.setHeader('content-type', 'application/json');
-             
-             res.write(JSON.stringify({'refreshedJWTToken': refreshedJWTToken}));
-            // console.log(res);
+            res.setHeader('refreshedJWTToken', refreshedJWTToken);
             next();
-            // res.json({
-            //   success: true,
-            //   token: token,
-            //   datas: employeeData
-            // });
           } catch(err) {
             console.log('errro happened')
             res.status(401).json({
@@ -120,19 +103,14 @@ var JWTValidation = function (req, res, next) {
               message: err
             });
           }
-        } else {
+        } else if (!err.validated && !err.refreshable) {
+          console.log('from validate error ', err);
           res.status(401).json({
             success: false,
-            message: 'Refresh token not available.'
+            message: err
           });
         }
-      }, function(err, data) {
-        console.log('from validate error ', err);
-        res.status(401).json({
-          success: false,
-          message: err
-        });
-      })
+      });
     } else {
       res.status(401).json({
         success: false,
@@ -145,7 +123,6 @@ var JWTValidation = function (req, res, next) {
       message: 'Authorization headers not available.'
     });
   }
-  // next();
 };
 
 
