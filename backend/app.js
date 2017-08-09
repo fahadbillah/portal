@@ -17,7 +17,10 @@ var JWTValidation = require('./middlewares/JWTValidation');
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 var mongoUrl = fs.readFileSync('mongo.config');  // get mongodb url
-mongoose.connect(mongoUrl, function(error){
+mongoose.connect(mongoUrl, {
+    useMongoClient: true,
+    /* other options */
+  }, function(error){
   if(error){
     console.log("error found in connecting to mongoUrl");
     console.error(error);

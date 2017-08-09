@@ -65,4 +65,20 @@ router.get('/profile/:_id', JWTValidation, function (req, res) {
   });
 });
 
+/* GET single employee. */
+router.post('/', function (req, res) {
+  console.log("creating new employee");
+  var createEmployee = new employee(req.body);
+  createEmployee.save(function(error){
+    if(error){
+      console.log(error);
+      res.status(500).json(error);
+    }else{
+      console.log("a new employee saved");
+      // res.json(req.body);
+      res.send("a new employee saved");
+    }
+  });
+});
+
 module.exports = router;
