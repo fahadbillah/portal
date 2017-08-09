@@ -3,7 +3,8 @@ var timestamps = require('mongoose-timestamp');
 var bcrypt=require('bcryptjs');
 var SALT_WORK_FACTOR = 10;
 var saltRounds = 10;
-var employeeContact = require('./employeeContact');
+var employeeContact = require('./employeeContact').employeeContact;
+var shortEmployeeContact = require('./employeeContact').shortEmployeeContact;
 
 var employee = new mongoose.Schema({
   first_name : {type:String, required:true},
@@ -15,7 +16,7 @@ var employee = new mongoose.Schema({
     enum : ['male', 'female'],
     required : true
   },
-  contact_info : employeeContact.schema,
+  contact_info : shortEmployeeContact,
   account_status : {
     type : String, 
     enum: ['not_yet_activated', 'active', 'deactivated'],
@@ -30,9 +31,10 @@ employee.plugin(timestamps);
 
 
 employee.pre('save', function(next) {
-  var employee = this;
-
-  var contactOfEmployee = new employeeContact(employee.contact_info);
+  console.log(this);
+  var employeeData = this;
+  console.log(employeeData.contact_info);
+  var contactOfEmployee = new employeeContact(employeeData.contact_info);
   contactOfEmployee.save(function(error){
     if(error){
       console.log(error);
@@ -41,14 +43,14 @@ employee.pre('save', function(next) {
       console.log("a new employee saved");
     }
   });
-  if (!employee.isModified('password')) {
+  if (!employeeData.isModified('password')) {
     return next();
   }
-  bcrypt.hash(employee.password, saltRounds, function(error, hash) {
+  bcrypt.hash(employeeData.password, saltRounds, function(error, hash) {
     if(error) {
       return next(error);
     }
-    employee.password=hash;
+    employeeData.password=hash;
     next();
   });
 });
